@@ -30,7 +30,26 @@ class Binary(commands.Cog):
             ctx (Context): The required context
             char_str (String): The string of characters to convert
         """
-        # TODO: IMPLEMENT
+        binary_str = ""
+
+        # Convert each character
+        for char in char_str:
+            # Convert the char to its integer value
+            char = ord(char)
+
+            # Avoid dealing with emojis or other special characters
+            if char > 255:
+                await ctx.send("Invalid text. Please omit special characters" +
+                               " like emojis.")
+                return
+
+            # Create the 8 binary digits for the character
+            for num in range(7, -1, -1):
+                binary_digit = char // 2 ** num
+                binary_str += str(binary_digit)
+                char %= 2 ** num
+            binary_str += " "
+        await ctx.send("Here's what you said in binary:\n" + binary_str)
 
     @commands.command(aliases=["cfb"])
     async def char_from_binary(self, ctx, *, binary_str):
@@ -42,7 +61,21 @@ class Binary(commands.Cog):
             ctx (Context): The required context
             binary_str (String): String representation of the binary to convert
         """
-        # TODO: IMPLEMENT
+        char_str = ""
+
+        # Make sure the input is valid (multiples of 8 binary numbers)
+        if binary_str % 8 != 0:
+            await ctx.send("Please make sure that you give me binary digits" +
+                           " in multiples of 8 so I can convert it properly!")
+            return
+
+        # Make sure the input is valid (only ones and zeroes)
+        for binary_num in binary_str:
+            if binary_num != 1 or binary_num != 0:
+                await ctx.send("Please only input ones and zeroes.")
+                return
+
+        # Convert each multiple of 8
 
         # chr(int)
         # ord(char)
