@@ -49,7 +49,7 @@ class Binary(commands.Cog):
                 binary_str += str(binary_digit)
                 char %= 2 ** num
             binary_str += " "
-        await ctx.send("Here's what you said in binary:\n" + binary_str)
+        await ctx.send("Converted characters to binary:\n" + binary_str)
 
     @commands.command(aliases=["cfb"])
     async def char_from_binary(self, ctx, *, binary_str):
@@ -63,22 +63,38 @@ class Binary(commands.Cog):
         """
         char_str = ""
 
+        # We don't care for whitespace and since binary is read from right to
+        # left, we reverse the string
+        binary_str = "".join(binary_str.split())
+        binary_str = binary_str[::-1]
+
         # Make sure the input is valid (multiples of 8 binary numbers)
-        if binary_str % 8 != 0:
+        if len(binary_str) % 8 != 0:
             await ctx.send("Please make sure that you give me binary digits" +
                            " in multiples of 8 so I can convert it properly!")
             return
 
         # Make sure the input is valid (only ones and zeroes)
         for binary_num in binary_str:
-            if binary_num != 1 or binary_num != 0:
+            if int(binary_num) != 1 and int(binary_num) != 0:
                 await ctx.send("Please only input ones and zeroes.")
                 return
 
-        # Convert each multiple of 8
+        this_val = 0
+        i = 0
+        for binary_num in binary_str:
+            this_val += int(binary_num) * 2 ** i
 
-        # chr(int)
-        # ord(char)
+            # This is the last number in the multiple of 8
+            if i == 7:
+                char_str += chr(this_val)
+                this_val = 0
+                i = 0
+            else:
+                i += 1
+
+        # Since we reversed the binary string, we need to revers the chars too
+        await ctx.send("Converted binary to characters:\n" + char_str[::-1])
 
 
 def setup(bot):
