@@ -1,9 +1,12 @@
-# import discord
+import discord
 from discord.ext import commands
 from bot_token import TOKEN
 
 # Commands will be called by typing: !cmdname
 bot = commands.Bot(command_prefix="!")
+
+# Remove the default help command
+bot.remove_command("help")
 
 # All existing codes in this project
 all_cogs = ["Binary"]
@@ -19,14 +22,49 @@ async def on_ready():
     """
     print("Demutatus is online!")
 
-# TODO: Add a help embed
+
+@bot.command()
+async def help(ctx):
+    """
+    Sends an embed with the commands and descriptions for all the loaded cogs
+
+    Parameters:
+        ctx (Context): The required context
+    """
+    help_embed_dict = {'fields': [{'inline': False, 'name': '\u200b', 'value': '\u200b'},
+                                  {'inline': True, 'name': 'ADMIN COMMANDS:', 'value': '\u200b'},
+                                  {'inline': False, 'name': '!load_cog\t!loadcog\t!load',
+                                   'value': 'Loads the cog passed in, if it exists.'},
+                                  {'inline': False, 'name': '!unload_cog\t!unloadcog\t!unload',
+                                   'value': 'Unloads the cog passed in, if it is loaded.'},
+                                  {'inline': False, 'name': '!reload_cog\t!reloadcog\t!reload',
+                                   'value': 'Unloads and reloads a loaded cog.'},
+                                  {'inline': False, 'name': '!halt', 'value': 'Stops execution of the bot'},
+                                  {'inline': False, 'name': '\u200b', 'value': '\u200b'},
+                                  {'inline': True, 'name': 'GENERAL COMMANDS:', 'value': '\u200b'},
+                                  {'inline': False, 'name': '!view_cogs\t!viewcogs\t!view',
+                                   'value': 'Shows a list of all the currently loaded cogs.'}],
+                       'type': 'rich',
+                       'description': 'Command list for all loaded cogs',
+                       'title': 'Demutatus Commands'}
+
+    help_embed = discord.Embed.from_dict(help_embed_dict)
+
+    # Add the commands from all the other loaded cogs
+    for cog in current_cogs:
+        info = bot.get_cog(cog).info
+        help_embed_dict['fields'].extend(info)
+
+    await ctx.send(embed=help_embed)
+
+    print(help_embed.to_dict())
 
 
 @bot.command(aliases=["load", "loadcog"])
 @commands.has_permissions(manage_messages=True)
 async def load_cog(ctx, ext):
     """
-    Loads the cog passed in, if it exists.
+    Loads the cog passed in, if it exists
 
     Parameters:
         ctx (Context): The required context
@@ -80,8 +118,11 @@ async def reload_cog(ctx, ext):
         ctx (Context): The required context
         ext (str): The name of the cog (without the file extension)
     """
-    bot.reload_extension("cogs.%s" % ext)
-    await ctx.send("Cog successfully reloaded!")
+    if ext in current_cogs:
+        bot.reload_extension("cogs.%s" % ext)
+        await ctx.send("Cog successfully reloaded!")
+    else:
+        await ctx.send("Cog must be loaded before it can be reloaded.")
 
 
 @bot.command(aliases=["view", "viewcogs"])

@@ -9,10 +9,16 @@ class Binary(commands.Cog):
     Commands:
         !char_to_binary: converts all characters that follow from their ASCII
                          values to their binary values
-        !char_from_binary: converts all characters that follow from their
-                           binary values to their ASCII values (and prints them
-                           as chars)
+        !binary_to_char: converts all characters that follow from their
+                         binary values to their ASCII values (and prints them
+                         as chars)
     """
+
+    info = [{'inline': False, 'name': '!char_to_binary\t!ctb',
+             'value': 'Converts all characters that follow from their ASCII values to their binary values.'},
+            {'inline': False, 'name': '!binary_to_char\t!btc',
+             'value': 'Converts all characters that follow from their binary values to their ASCII values'
+                      '(and prints them as chars)'}]
 
     def __init__(self, bot):
         """
@@ -51,8 +57,8 @@ class Binary(commands.Cog):
             binary_str += " "
         await ctx.send("Converted characters to binary:\n" + binary_str)
 
-    @commands.command(aliases=["cfb"])
-    async def char_from_binary(self, ctx, *, binary_str):
+    @commands.command(aliases=["btc"])
+    async def binary_to_char(self, ctx, *, binary_str):
         """
         Converts all characters that follow from their binary values to their
         ASCII values (and prints them as chars)
