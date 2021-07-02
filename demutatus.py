@@ -2,8 +2,6 @@ import discord
 from discord.ext import commands
 from bot_token import TOKEN
 
-# TODO: make sure that you specify that binary should be in groups of 8 and hex in groups of 2
-
 # Commands will be called by typing: !cmdname
 bot = commands.Bot(command_prefix='d!')
 
