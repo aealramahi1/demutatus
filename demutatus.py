@@ -1,3 +1,4 @@
+import os
 import discord
 from discord.ext import commands
 from bot_token import TOKEN
@@ -8,12 +9,17 @@ bot = commands.Bot(command_prefix='d!')
 # Remove the default help command
 bot.remove_command('help')
 
-# All existing codes in this project
-all_cogs = ['to_hex', 'to_binary', 'to_char']
+# Dynamically load in all cogs by default
+all_cogs = []
+current_cogs = []
 
-# Currently loaded cogs
-current_cogs = ['to_hex', 'to_binary', 'to_char']
+dir = os.fsencode("./cogs")
 
+for file in os.listdir(dir):
+    filename = os.fsdecode(file)
+    if filename.endswith(".py"):
+        all_cogs.append(filename[0:-3])
+        current_cogs.append(filename[0:-3])
 
 @bot.event
 async def on_ready():
