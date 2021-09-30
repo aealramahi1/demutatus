@@ -16,4 +16,14 @@ Once you have created your bot and obtained its token, download the code in this
 and add a file (on the same level as demutatus.py) named bot_token.py. Inside this file, put:
 ```TOKEN = YOUR TOKEN HERE``` replacing "YOUR TOKEN HERE" with the token you've obtained.
 
+### What does that look like?
+Below are some samples of a user interacting with the bot.
+![Help embed example](https://github.com/aealramahi1/demutatus/images/help_embed.png)
+
+The user calls the help embed using hte ```d!help``` command.
+
+![Sample conversion from character to binary](https://github.com/aealramahi1/demutatus/images/sample_conversion.png)
+
+The user uses ```d!ctb``` to convert "Hello!" from character to binary.
+
 If you have any questions, comments, or suggestions for demutatus, please email me at [aalram@outlook.com](aalram@outlook.com).
