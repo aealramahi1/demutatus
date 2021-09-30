@@ -18,11 +18,11 @@ and add a file (on the same level as demutatus.py) named bot_token.py. Inside th
 
 ### What does that look like?
 Below are some samples of a user interacting with the bot.
-![Help embed example](https://github.com/aealramahi1/demutatus/images/help_embed.png)
+![Help embed example](./images/help_embed.png)
 
 The user calls the help embed using hte ```d!help``` command.
 
-![Sample conversion from character to binary](https://github.com/aealramahi1/demutatus/images/sample_conversion.png)
+![Sample conversion from character to binary](./images/sample_conversion.png)
 
 The user uses ```d!ctb``` to convert "Hello!" from character to binary.
 
